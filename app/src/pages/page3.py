@@ -1,6 +1,4 @@
-
 import pandas as pd
-import seaborn as sns
 import streamlit as st
 from src.main import df
 from src.utils.plotly_charts.bar import bar
