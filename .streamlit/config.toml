@@ -1,0 +1,10 @@
+[theme]
+backgroundColor = "#FFFFFF"
+textColor = "#000"
+font = "sans serif"
+base = "dark"
+
+[theme.sidebar]
+backgroundColor  = "#031e57"
+textColor ="#FFFFFF"
+borderColor = "#FFFFFF"
