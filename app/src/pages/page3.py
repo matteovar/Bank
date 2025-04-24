@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import plotly.express as px
-=======
-import pandas as pd
->>>>>>> bb82bc26f88c96543d1fb9558c0fd9485a89b7cd
 import streamlit as st
 from src.main import df
 from src.utils.plotly_charts.bar import bar
