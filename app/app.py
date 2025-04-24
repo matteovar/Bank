@@ -11,6 +11,7 @@ def main():
             st.Page("src/pages/main_page.py", title="Visão Geral"),
             st.Page("src/pages/page_2.py", title="Tendências Temporais"),
             st.Page("src/pages/page3.py", title="Performance de Campanha"),
+            st.Page("src/pages/page4.py", title="Insights Avançados"),
         ],
     }
 

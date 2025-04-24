@@ -19,31 +19,30 @@ def show_main():
     )
 
     cols = st.columns(3)
-
     with cols[0]:
         total_clientes = len(df)
-        clientes_convertidos = df[df["Target"] == "yes"].shape[0]
+        clientes_convertidos = df[df["Deposito"] == "yes"].shape[0]
 
         taxa_conversao = (clientes_convertidos / total_clientes) * 100
         create_cards("Taxa de Conversao (%)", f"{taxa_conversao:.2f}%")
     with cols[1]:
         create_cards(
             "Valor medio de saldo",
-            f'{ get_data_agg(df=df, column_name="balance", agg_type="mean"):.2f}',
+            f'{ get_data_agg(df=df, column_name="Balanco", agg_type="mean"):.2f}',
         )
     with cols[2]:
         create_cards(
             "Total de Clientes",
-            get_data_agg(df=df, column_name="age", agg_type="count"),
+            get_data_agg(df=df, column_name="Idade", agg_type="count"),
         )
 
     col = st.columns(2)
 
     with col[0]:
-        group = df["age"].value_counts().reset_index()
+        group = df["Idade"].value_counts().reset_index()
         histogram(
             df=group,
-            x="age",
+            x="Idade",
             y="count",
             title="Distribuicao por idade",
             log_y=True,

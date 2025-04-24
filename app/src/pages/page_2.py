@@ -1,14 +1,13 @@
 import pandas as pd
 import streamlit as st
-from src.main import df, get_group_agg
+from src.main import df
 from src.utils.plotly_charts.bar import bar
-from src.utils.plotly_charts.line import line
 
 
 def taxa_meses(df):
 
-    df["month"] = pd.Categorical(
-        df["month"],
+    df["Mes"] = pd.Categorical(
+        df["Mes"],
         categories=[
             "jan",
             "feb",
@@ -27,7 +26,7 @@ def taxa_meses(df):
     )
 
     taxa_conversao_estado_civil = (
-        df.groupby("month")["Target"]
+        df.groupby("Mes")["Deposito"]
         .value_counts(normalize=True)
         .unstack()
         .fillna(0)
@@ -36,7 +35,7 @@ def taxa_meses(df):
 
     taxa_conversao_estado_civil["conversao"] = taxa_conversao_estado_civil["yes"] * 100
     top5 = (
-        taxa_conversao_estado_civil.groupby("month")["conversao"]
+        taxa_conversao_estado_civil.groupby("Mes")["conversao"]
         .sum()
         .reset_index()
         .sort_values("conversao", ascending=False)
@@ -47,7 +46,7 @@ def taxa_meses(df):
 
 def taxa_dias_meses(df):
     taxa_conversao_estado_civil_1 = (
-        df.groupby(["day", "month"])["Target"]
+        df.groupby(["Dia", "Mes"])["Deposito"]
         .value_counts(normalize=True)
         .unstack()
         .fillna(0)
@@ -58,22 +57,23 @@ def taxa_dias_meses(df):
     )
     selecione = st.multiselect(
         "Seleciona os meses",
-        options=taxa_conversao_estado_civil_1["month"].unique(),
+        options=taxa_conversao_estado_civil_1["Mes"].unique(),
         default="jan",
     )
 
     df_filtered = taxa_conversao_estado_civil_1[
-        taxa_conversao_estado_civil_1["month"].isin(selecione)
+        taxa_conversao_estado_civil_1["Mes"].isin(selecione)
     ]
     bar(
         df=df_filtered,
-        x="day",
+        x="Dia",
         y="conversao",
-        color="month",
+        color="Mes",
         y_label="Taxa de Conversao (%)",
         x_label="Dias",
         log_y=True,
         title="Taxa de conversao em dias de acordo com os meses",
+        color_sequence=["#0000ff"],  # <- lista com uma_
     )
 
 

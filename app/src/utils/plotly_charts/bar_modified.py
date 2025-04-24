@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+from src.utils.plotly_charts.bar import bar
 from streamlit.components.v1 import html
 
 
@@ -15,7 +16,7 @@ def plot_taxa_conversao_estado_civil(df, col, color: str = "#4C78A8"):
     with col:
         # Processamento dos dados
         taxa_conversao_estado_civil = (
-            df.groupby("marital")["Target"]
+            df.groupby("Estado civil")["Deposito"]
             .value_counts(normalize=True)
             .unstack()
             .fillna(0)

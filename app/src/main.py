@@ -1,6 +1,28 @@
 import pandas as pd
 
 df = pd.read_csv("app/data/input/bank-full.csv")
+df.rename(
+    columns={
+        "age": "Idade",
+        "job": "Trabalho",
+        "marital": "Estado civil",
+        "education": "Educacao",
+        "default": "Credito",
+        "balance": "Balanco",
+        "housing": "Imovel",
+        "loan": "Emprestimo",
+        "contact": "Contato",
+        "day": "Dia",
+        "month": "Mes",
+        "duration": "Duracao",
+        "campaign": "Entrou em contato",
+        "pdays": "Dias passados",
+        "previous": "Antes do Contato",
+        "poutcome": "Campanha passada",
+        "Target": "Deposito",
+    },
+    inplace=True,
+)
 
 
 def get_data_agg(df: pd.DataFrame, column_name: str, agg_type: str = None):

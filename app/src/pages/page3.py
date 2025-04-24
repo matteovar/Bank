@@ -1,6 +1,4 @@
-import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sns
+import plotly.express as px
 import streamlit as st
 from src.main import df
 from src.utils.plotly_charts.bar import bar
@@ -8,27 +6,47 @@ from src.utils.plotly_charts.bar import bar
 
 def conv_camp(df):
     taxa_conversao = (
-        df.groupby("poutcome")["Target"]
+        df.groupby("Campanha passada")["Deposito"]
         .value_counts(normalize=True)
         .unstack()
         .fillna(0)
         .reset_index()
     )
     taxa_conversao["conversao"] = taxa_conversao["yes"] * 100
-    st.dataframe(df)
     bar(
         df=taxa_conversao,
-        x="poutcome",
+        x="Campanha passada",
         y="conversao",
         x_label="Campanhas",
         y_label="Taxa de Conversao (%)",
         title="Taxa de Conversão por Resultado da Campanha Anterior",
         log_y=True,
+        color_sequence=["#0000ff"],  # <- lista com uma_
+    )
+
+
+def conv_conta(df):
+    taxa_conversao = (
+        df.groupby("Contato")["Deposito"]
+        .value_counts(normalize=True)
+        .unstack()
+        .fillna(0)
+        .reset_index()
+    )
+    taxa_conversao["conversao"] = taxa_conversao["yes"] * 100
+    bar(
+        df=taxa_conversao,
+        x="Contato",
+        y="conversao",
+        x_label="Campanhas",
+        y_label="Taxa de Conversao (%)",
+        title="Taxa de Conversão por tipos de comunicacao",
+        log_y=True,
+        color_sequence=["#0000ff"],  # <- lista com uma_
     )
 
 
 def campanha():
-    conv_camp(df)
     st.markdown(
         """
             <h1 style='text-align: center; font-family: Arial, sans-serif;'>
@@ -39,23 +57,11 @@ def campanha():
         unsafe_allow_html=True,
     )
 
-    taxa_conversao = (
-        df.groupby("contact")["Target"]
-        .value_counts(normalize=True)
-        .unstack()
-        .fillna(0)
-        .reset_index()
-    )
-    taxa_conversao["conversao"] = taxa_conversao["yes"] * 100
-    bar(
-        df=taxa_conversao,
-        x="contact",
-        y="conversao",
-        x_label="Campanhas",
-        y_label="Taxa de Conversao (%)",
-        title="Taxa de Conversão por tipos de comunicacao",
-        log_y=True,
-    )
+    col = st.columns(2)
+    with col[0]:
+        conv_camp(df)
+    with col[1]:
+        conv_conta(df)
 
 
 campanha()
