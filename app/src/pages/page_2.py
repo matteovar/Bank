@@ -6,25 +6,40 @@ from src.utils.plotly_charts.bar import bar
 
 def taxa_meses(df):
 
+    meses_map = {
+        "jan": "Janeiro",
+        "feb": "Fevereiro",
+        "mar": "Março",
+        "apr": "Abril",
+        "may": "Maio",
+        "jun": "Junho",
+        "jul": "Julho",
+        "aug": "Agosto",
+        "sep": "Setembro",
+        "oct": "Outubro",
+        "nov": "Novembro",
+        "dec": "Dezembro",
+    }
+
+    df["Mes"] = df["Mes"].replace(meses_map)
     df["Mes"] = pd.Categorical(
         df["Mes"],
         categories=[
-            "jan",
-            "feb",
-            "mar",
-            "apr",
-            "may",
-            "jun",
-            "jul",
-            "aug",
-            "sep",
-            "oct",
-            "nov",
-            "dec",
+            "Janeiro",
+            "Fevereiro",
+            "Março",
+            "Abril",
+            "Maio",
+            "Junho",
+            "Julho",
+            "Agosto",
+            "Setembro",
+            "Outubro",
+            "Novembro",
+            "Dezembro",
         ],
         ordered=True,
     )
-
     taxa_conversao_estado_civil = (
         df.groupby("Mes")["Deposito"]
         .value_counts(normalize=True)
@@ -84,11 +99,10 @@ def show_table(title, df, column, ascending=True):
     st.markdown(f"#### {title}")
     st.dataframe(
         top10,
-        column_order=("month", column),
+        column_order=["Mes", column],  # <- Ajuste aqui para garantir que "Mes" apareça
         hide_index=True,
         width=None,
         column_config={
-            "month": st.column_config.TextColumn("Meses"),
             column: st.column_config.ProgressColumn(
                 column,
                 format="%f",
@@ -113,15 +127,13 @@ def tendencias():
     taxa_dias_meses(df)
 
     top5 = taxa_meses(df)
-    cols = st.columns(2)
-    with cols[0]:
-        taxa_meses(df)
-        show_table(
-            "Top 5 meses com maiores taxas de conversao",
-            df=top5,
-            column="conversao",
-            ascending=False,
-        )
+    taxa_meses(df)
+    show_table(
+        "Top 5 meses com maiores taxas de conversao",
+        df=top5,
+        column="conversao",
+        ascending=False,
+    )
 
 
 tendencias()
